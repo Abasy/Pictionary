@@ -1,6 +1,7 @@
 package fr.ensibs.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 
@@ -20,7 +21,7 @@ public class Affichage extends JPanel
 	public Affichage()
 	{
 		this.reset = true ;
-
+		this.setPreferredSize( new Dimension( 600 , 400 ) ) ;
 	}
 	
 	/**
@@ -44,6 +45,11 @@ public class Affichage extends JPanel
 			g.setColor( new Color( 0 , 0 , 0 ) ) ;
 			g.fillRect( (int) (this.zone_de_dessin_x - this.taille_pinceau*0.5) , (int) (this.zone_de_dessin_y - this.taille_pinceau*0.5) , this.taille_pinceau , this.taille_pinceau ) ;
 		}
+	}
+	
+	public void reset()
+	{
+		
 	}
 
 	public int getZone_de_dessin_x()
