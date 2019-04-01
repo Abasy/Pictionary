@@ -1,4 +1,4 @@
-package controller;
+package fr.ensibs.controller;
 
 public class Main {
 
