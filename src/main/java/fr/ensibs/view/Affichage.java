@@ -22,6 +22,8 @@ public class Affichage extends JPanel
 	{
 		this.reset = true ;
 		this.setPreferredSize( new Dimension( 600 , 400 ) ) ;
+		this.zone_de_dessin_x = -100 ; // il arrive trop souvent que le fond ne se peint pas à l'initialisation
+		this.zone_de_dessin_y = -100 ;
 	}
 	
 	/**
@@ -29,7 +31,7 @@ public class Affichage extends JPanel
 	 */
 	public void paintComponent( Graphics g )
 	{
-		if ( reset == true )
+		if ( reset == true || ( this.zone_de_dessin_x == -100 && this.zone_de_dessin_y == -100 ) )
 		{
 			//reset de l'écran
 			g.setColor( new Color( 55 , 255 , 255 ) ) ;
