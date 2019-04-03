@@ -1,4 +1,4 @@
-package fr.ensibs.view;
+package fr.ensibs.client;
 
 import net.jini.core.entry.Entry;
 
