@@ -7,8 +7,8 @@ public class Main
 	{
 		FrameAffichage frame = new FrameAffichage() ;
 		frame.setVisible( true ) ;
-		frame.play() ;
-		frame.dispose() ;
+		//frame.play() ;
+		//frame.dispose() ;
 	}
 
 }

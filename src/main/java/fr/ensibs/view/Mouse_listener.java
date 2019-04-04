@@ -4,6 +4,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 
 public class Mouse_listener implements MouseMotionListener , MouseListener
 {
@@ -12,7 +15,7 @@ public class Mouse_listener implements MouseMotionListener , MouseListener
 
 	public Mouse_listener( Affichage affichage )
 	{
-		this.drawing = true ;
+		this.drawing = false ;
 		this.fenetre = affichage ;
 	}
 
@@ -23,7 +26,7 @@ public class Mouse_listener implements MouseMotionListener , MouseListener
 		{
 			this.fenetre.setZone_de_dessin_x( (int) e.getX() ) ;
 			this.fenetre.setZone_de_dessin_y( (int) e.getY() ) ;
-			this.fenetre.repaint() ;
+			this.fenetre.paint(this.fenetre.getGraphics()) ; // repaint bug
 		}
 	}
 
@@ -44,7 +47,12 @@ public class Mouse_listener implements MouseMotionListener , MouseListener
 	@Override
 	public void mousePressed( MouseEvent e )
 	{
-		;
+		if ( this.isDrawing() == true )
+		{
+			this.fenetre.setZone_de_dessin_x( (int) e.getX() ) ;
+			this.fenetre.setZone_de_dessin_y( (int) e.getY() ) ;
+			this.fenetre.paint(this.fenetre.getGraphics()) ; // repaint bug
+		}
 	}
 
 	@Override

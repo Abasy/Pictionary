@@ -36,13 +36,10 @@ public class Affichage extends JPanel
 			//reset de l'écran
 			g.setColor( new Color( 55 , 255 , 255 ) ) ;
 			g.fillRect( 0 , 0 , 600 , 400 ) ;
+			reset = false ;
 		}
 		else
 		{
-			// écriture de texte
-			g.setColor( new Color( 100 , 100 , 200 ) ) ;
-		    g.setFont( new Font( "arial" , Font.BOLD , 20 ) ) ;
-			g.drawString( "bonjour" , 100 , 100 ) ;
 			// dessin
 			g.setColor( new Color( 0 , 0 , 0 ) ) ;
 			g.fillRect( (int) (this.zone_de_dessin_x - this.taille_pinceau*0.5) , (int) (this.zone_de_dessin_y - this.taille_pinceau*0.5) , this.taille_pinceau , this.taille_pinceau ) ;
