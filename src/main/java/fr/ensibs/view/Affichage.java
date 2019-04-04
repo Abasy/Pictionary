@@ -2,7 +2,6 @@ package fr.ensibs.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -13,17 +12,19 @@ public class Affichage extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 1L ;
+	private boolean reset ;
 	private int zone_de_dessin_x ;
 	private int zone_de_dessin_y ;
 	private int taille_pinceau ;
-	private boolean reset ;
+	private Color couleur ;
 	
-	public Affichage()
+	public Affichage( Color couleur )
 	{
 		this.reset = true ;
 		this.setPreferredSize( new Dimension( 600 , 400 ) ) ;
 		this.zone_de_dessin_x = -100 ; // il arrive trop souvent que le fond ne se peint pas à l'initialisation
 		this.zone_de_dessin_y = -100 ;
+		this.couleur = couleur ;
 	}
 	
 	/**
@@ -34,14 +35,14 @@ public class Affichage extends JPanel
 		if ( reset == true || ( this.zone_de_dessin_x == -100 && this.zone_de_dessin_y == -100 ) )
 		{
 			//reset de l'écran
-			g.setColor( new Color( 55 , 255 , 255 ) ) ;
+			g.setColor( new Color( 200 , 200 , 200 ) ) ;
 			g.fillRect( 0 , 0 , 600 , 400 ) ;
 			reset = false ;
 		}
 		else
 		{
 			// dessin
-			g.setColor( new Color( 0 , 0 , 0 ) ) ;
+			g.setColor( this.couleur ) ;
 			g.fillRect( (int) (this.zone_de_dessin_x - this.taille_pinceau*0.5) , (int) (this.zone_de_dessin_y - this.taille_pinceau*0.5) , this.taille_pinceau , this.taille_pinceau ) ;
 		}
 	}
