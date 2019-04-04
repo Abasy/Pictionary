@@ -1,4 +1,4 @@
-package fr.ensibs.client;
+package fr.ensibs.model;
 
 import java.awt.Color;
 

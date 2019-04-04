@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import fr.ensibs.river.RiverLookup;
+import fr.ensibs.model.User;
+import fr.ensibs.model.Word;
 import net.jini.core.entry.UnusableEntryException;
 import net.jini.core.transaction.TransactionException;
 import net.jini.space.JavaSpace;
@@ -24,35 +25,6 @@ public class ClientRiver {
 		}else {
 			System.out.println("No service found");
 			System.exit(-1);
-		}
-	}
-
-	
-	/**
-	 * Print a usage message and exit
-	 */
-	 private static void usage() {
-		 System.out.println("Usage: java -jar target/pictionary-1.0.jar <server_host> <server_port>");
-		 System.exit(-1);
-	 }
-	 
-	public static void main(String[] args) {
-		if (args.length < 2 || args[0].equals("-h")) {
-			usage();
-		}else if(args.length == 2) {
-			String host = args[0];
-			String port = args[1];
-			
-			try {
-				System.out.println("Searching for a JavaSpace...");
-				RiverLookup river = new RiverLookup();
-				JavaSpace  space = (JavaSpace) river.lookup(host, Integer.parseInt(port), JavaSpace.class);
-				
-				ClientRiver instance = new ClientRiver(space);
-				instance.test();
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -116,9 +88,8 @@ public class ClientRiver {
 		Word templateWord = new Word();
 		Word wordResult = null;
 		
-		if(this.space.readIfExists(templateWord, null, Long.MAX_VALUE) != null) {
-			wordResult = (Word) this.space.take(templateWord, null, Long.MAX_VALUE);
-		}
+		if((wordResult = (Word) this.space.takeIfExists(templateWord, null, Long.MAX_VALUE)) != null) {}
+		
 		System.out.println("Take Word : ["+wordResult.value+"]");
 		return wordResult;
 	}
@@ -136,7 +107,7 @@ public class ClientRiver {
 		return users;
 	}
 	
-	public void test() throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
+	/*public void test() throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
 		initSpace();
 		
 		addUser("Ollen", Color.BLACK);
@@ -156,5 +127,5 @@ public class ClientRiver {
 		takeAllUser();
 		
 		initSpace();
-	}
+	}*/
 }
