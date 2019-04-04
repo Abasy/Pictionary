@@ -1,10 +1,13 @@
 # Pictionary
-Dans le cadre du cours de middleware, nous devons réaliser une application qui met en place différents systèmes de middleware : RMI, Web service, JMS ou Tuple Space.
+Dans le cadre du cours de middleware, nous devons réaliser une application
+qui met en place différents systèmes de middleware : RMI, Web service, JMS ou Tuple Space.
 
 ## Application architecture
-
 The application is composed of:
-
+*Client applications
+	*`ClientJMS`
+	*`ClientRiver`
+*Controller pakage
 ## Build and execution
 The application is distributed as a Maven project, composed of a
 `src/` directory that contains the java sources and a `pom.xml` file
