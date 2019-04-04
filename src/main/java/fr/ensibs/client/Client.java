@@ -1,4 +1,4 @@
-package fr.ensibs.view;
+package fr.ensibs.client;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
