@@ -17,11 +17,6 @@ public class Main
 	 
 	public static void main( String[] args )
 	{
-		/*FrameAffichage frame = new FrameAffichage() ;
-		frame.setVisible( true ) ;
-		//frame.play() ;
-		//frame.dispose() ;
-		*/
 		if (args.length < 2 || args[0].equals("-h")) {
 			usage();
 		}else if(args.length == 2) {
@@ -33,8 +28,18 @@ public class Main
 				RiverLookup river = new RiverLookup();
 				JavaSpace  space = (JavaSpace) river.lookup(host, Integer.parseInt(port), JavaSpace.class);
 				
-				ClientRiver instance = new ClientRiver(space);
+				ClientRiver clientRiver = new ClientRiver(space);
 				//instance.test();
+				
+				if(space != null) {
+					FrameAffichage frame = new FrameAffichage();
+					frame.setVisible(true);
+					//frame.play();
+					//frame.dispose();
+				}else {
+					System.out.println("No service found. Please launch the river server.");
+					System.exit(-1);
+				}
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
