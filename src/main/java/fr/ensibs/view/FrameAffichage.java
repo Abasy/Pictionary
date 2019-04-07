@@ -35,6 +35,7 @@ public class FrameAffichage extends JFrame
 	private JPanel zone_de_dessin ;
 	private JPanel hud ;
 	private JPanel zone_affichage_joueurs ;
+	private JPanel zone_outil_dessin ;
 	private Mouse_listener ml ;
 	private boolean playing ;
 	private JTextField text ;
@@ -44,6 +45,10 @@ public class FrameAffichage extends JFrame
 	private JButton start_et_reset_bouton ;
 	private ArrayList<JLabel> affiche_joueur ;
 	//private ArrayList<User> joueur ;
+	private JLabel taille_pinceau ;
+	private JButton plus_taille_pinceau ;
+	private JButton moins_taille_pinceau ;
+	
 	
 	public FrameAffichage()
 	{
@@ -52,7 +57,7 @@ public class FrameAffichage extends JFrame
 		this.setLocationRelativeTo( null ) ;
 		this.setTitle( "Pictionary" ) ;
 		this.setResizable( false ) ;
-		this.setPreferredSize( new Dimension( 1000 , 450 ) ) ;
+		this.setPreferredSize( new Dimension( 1000 , 500 ) ) ;
 		this.addWindowListener(new WindowAdapter()
 			{
 		        @Override
@@ -144,6 +149,27 @@ public class FrameAffichage extends JFrame
 		{
 			this.zone_affichage_joueurs.add( joueur ) ;
 		}
+		this.zone_outil_dessin = new JPanel() ;
+		this.zone_outil_dessin.setPreferredSize( new Dimension( 600 , 50 ) ) ;
+		this.zone_de_dessin.add( this.zone_outil_dessin  , BorderLayout.NORTH ) ;
+		this.moins_taille_pinceau = new JButton() ;
+		this.moins_taille_pinceau.setText( "-" ) ;
+		this.moins_taille_pinceau.setPreferredSize( new Dimension( 45 , 25 ) ) ;
+		this.moins_taille_pinceau.addActionListener( this.create_moins_taille_pinceau_bouton_action() ) ;
+		this.moins_taille_pinceau.setVisible( false ) ;
+		this.zone_outil_dessin.add( this.moins_taille_pinceau ) ;
+		this.taille_pinceau = new JLabel( Integer.toString(this.fenetre.getTaille_pinceau()) ) ;
+		this.taille_pinceau.setPreferredSize( new Dimension( 20 , 50 ) ) ;
+		this.taille_pinceau.setHorizontalAlignment( SwingConstants.CENTER ) ;
+		this.taille_pinceau.setVerticalAlignment( SwingConstants.CENTER ) ;
+		this.taille_pinceau.setVisible( false ) ;
+		this.zone_outil_dessin.add( this.taille_pinceau ) ;
+		this.plus_taille_pinceau = new JButton() ;
+		this.plus_taille_pinceau.setText( "+" ) ;
+		this.plus_taille_pinceau.setPreferredSize( new Dimension( 45 , 25 ) ) ;
+		this.plus_taille_pinceau.addActionListener( this.create_plus_taille_pinceau_bouton_action() ) ;
+		this.plus_taille_pinceau.setVisible( false ) ;
+		this.zone_outil_dessin.add( this.plus_taille_pinceau ) ;
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize() ;
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);System.out.println(this.getSize().width);
 	}
@@ -175,7 +201,7 @@ public class FrameAffichage extends JFrame
 							break ;
 						default :
 							break ;
-					}		
+					}
 					System.out.println( e.getActionCommand() ) ; // le mettre dans le topic
 					text.setText( "" ) ;
 				}
@@ -206,7 +232,13 @@ public class FrameAffichage extends JFrame
 							/*if ( this.joueur.isDrawer == false )
 							{
 								start_et_reset_bouton.setVisible( false ) ;
-							}*/
+							}
+							else
+							{*/
+								moins_taille_pinceau.setVisible( true ) ;
+								taille_pinceau.setVisible( true ) ;
+								plus_taille_pinceau.setVisible( true ) ;
+							//}
 							ml.setDrawing( true ) ;
 							reponse.setText( "_ _ _ _ _ E _" ) ;
 							chronometre.setText( "60" ) ;
@@ -222,6 +254,45 @@ public class FrameAffichage extends JFrame
 						default :
 							break ;
 					}
+				}
+		    }
+		};
+		return action ;
+	}
+	
+	public Action create_moins_taille_pinceau_bouton_action()
+	{
+		Action action = new AbstractAction()
+		{
+			private static final long serialVersionUID = 1L ;
+
+			@Override
+		    public void actionPerformed( ActionEvent e )
+		    {
+				if ( fenetre.getTaille_pinceau() > 1 )
+				{
+					fenetre.setTaille_pinceau( fenetre.getTaille_pinceau() - 1 ) ;
+					taille_pinceau.setText( Integer.toString(fenetre.getTaille_pinceau()) );
+				}
+				
+		    }
+		};
+		return action ;
+	}
+	
+	public Action create_plus_taille_pinceau_bouton_action()
+	{
+		Action action = new AbstractAction()
+		{
+			private static final long serialVersionUID = 1L ;
+
+			@Override
+		    public void actionPerformed( ActionEvent e )
+		    {
+				if ( fenetre.getTaille_pinceau() < 20 )
+				{
+					fenetre.setTaille_pinceau( fenetre.getTaille_pinceau() + 1 ) ;
+					taille_pinceau.setText( Integer.toString(fenetre.getTaille_pinceau()) );
 				}
 		    }
 		};

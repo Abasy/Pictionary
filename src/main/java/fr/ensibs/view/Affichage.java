@@ -91,4 +91,14 @@ public class Affichage extends JPanel
 	{
 		this.reset = reset ;
 	}
+
+	public Color getCouleur()
+	{
+		return couleur ;
+	}
+
+	public void setCouleur( Color couleur )
+	{
+		this.couleur = couleur ;
+	}
 }
