@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -51,7 +52,7 @@ public class Mouse_listener implements MouseMotionListener , MouseListener
 		{
 			this.fenetre.setZone_de_dessin_x( (int) e.getX() ) ;
 			this.fenetre.setZone_de_dessin_y( (int) e.getY() ) ;
-			this.fenetre.paint(this.fenetre.getGraphics()) ; // repaint bug
+			this.fenetre.paint( this.fenetre.getGraphics() ) ; // repaint bug
 		}
 	}
 
