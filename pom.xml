@@ -48,7 +48,7 @@
 	</build>
 	
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 		    <groupId>org.ow2.joram</groupId>
 		    <artifactId>joram-client-jms</artifactId>
 		    <version>5.16.0</version>
@@ -57,7 +57,7 @@
 		    <groupId>org.ow2.joram</groupId>
 		    <artifactId>jndi-client</artifactId>
 		    <version>5.16.0</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 		    <groupId>fr.ensibs</groupId>
 		    <artifactId>joram-admin</artifactId>
