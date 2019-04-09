@@ -3,6 +3,7 @@ package fr.ensibs.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -17,14 +18,16 @@ public class Affichage extends JPanel
 	private int zone_de_dessin_y ;
 	private int taille_pinceau ;
 	private Color couleur ;
+	private Map<String,Color> couleurs_disponibles ;
 	
-	public Affichage( Color couleur )
+	public Affichage( Map<String,Color> couleurs_disponibles )
 	{
 		this.reset = true ;
 		this.setPreferredSize( new Dimension( 600 , 400 ) ) ;
 		this.zone_de_dessin_x = -100 ; // il arrive trop souvent que le fond ne se peint pas à l'initialisation
 		this.zone_de_dessin_y = -100 ;
-		this.couleur = couleur ;
+		this.couleur = Color.BLACK ;
+		this.couleurs_disponibles = couleurs_disponibles ;
 	}
 	
 	/**
@@ -35,7 +38,7 @@ public class Affichage extends JPanel
 		if ( reset == true || ( this.zone_de_dessin_x == -100 && this.zone_de_dessin_y == -100 ) )
 		{
 			//reset de l'écran
-			g.setColor( new Color( 200 , 200 , 200 ) ) ;
+			g.setColor( this.couleur ) ;
 			g.fillRect( 0 , 0 , 600 , 400 ) ;
 			reset = false ;
 		}
@@ -100,5 +103,10 @@ public class Affichage extends JPanel
 	public void setCouleur( Color couleur )
 	{
 		this.couleur = couleur ;
+	}
+	
+	public void set_couleur_pinceau( String nom_couleur )
+	{
+		this.setCouleur( this.couleurs_disponibles.get( nom_couleur ) ) ;
 	}
 }
