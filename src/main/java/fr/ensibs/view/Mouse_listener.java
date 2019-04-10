@@ -3,21 +3,22 @@ package fr.ensibs.view;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Properties;
 
-import javax.swing.JComboBox;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import fr.ensibs.client.Client;
 
 
 public class Mouse_listener implements MouseMotionListener , MouseListener
 {
 	private boolean drawing ;
 	private Affichage fenetre ;
+	private Client client ;
 
-	public Mouse_listener( Affichage affichage )
+	public Mouse_listener( Affichage affichage , Client client )
 	{
 		this.drawing = false ;
 		this.fenetre = affichage ;
+		this.client = client ;
 	}
 
 	@Override
@@ -27,7 +28,10 @@ public class Mouse_listener implements MouseMotionListener , MouseListener
 		{
 			this.fenetre.setZone_de_dessin_x( (int) e.getX() ) ;
 			this.fenetre.setZone_de_dessin_y( (int) e.getY() ) ;
-			this.fenetre.paint(this.fenetre.getGraphics()) ; // repaint bug
+			this.fenetre.paint( this.fenetre.getGraphics() ) ; // repaint bug
+			String[] tag_playing_joueur = { "" } ;
+			Properties tags = client.parseTags( tag_playing_joueur , 0 ) ;
+			client.share( e.getX() + " " + e.getY() , tags ) ;
 		}
 	}
 

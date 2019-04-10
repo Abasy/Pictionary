@@ -8,12 +8,11 @@ import javax.jms.TextMessage;
 import fr.ensibs.model.User;
 import fr.ensibs.view.FrameAffichage;
 
-
-public class MyListener implements MessageListener
+public class MyListener2 implements MessageListener
 {
 	FrameAffichage jeu ;
 	
-	public MyListener( FrameAffichage jeu )
+	public MyListener2( FrameAffichage jeu )
 	{
 		this.jeu = jeu ;
 	}

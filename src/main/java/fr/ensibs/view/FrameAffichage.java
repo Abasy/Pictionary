@@ -67,7 +67,7 @@ public class FrameAffichage extends JFrame
 	private JLabel chronometre ;
 	private JButton start_et_reset_bouton ;
 	private ArrayList<JLabel> affiche_joueur ;
-	private ArrayList<User> joueurs ;
+	public ArrayList<User> joueurs ;
 	public User moi ;
 	private JLabel taille_pinceau ;
 	private JButton plus_taille_pinceau ;
@@ -78,14 +78,23 @@ public class FrameAffichage extends JFrame
 	private JComboBox<String> choix_couleur_pinceau ;
 	private String[] nom_couleurs_disponibles = { "Black" , "Dark-gray" , "Gray" , "Light-gray" , "White" , "Red" , "Green" , "Blue" , "Orange" , "Yellow" , "Pink" , "Cyan" , "Magenta" } ;
 	private Map<String,Color> couleurs_disponibles ;
+	private JComboBox<String> choix_couleur ;
 	private Client client ;
 	private ClientRiver clientriver;
 	private String[] tag_joueur ;
+	private String[] tag_playing_joueur ;
 	private String[] tag_new_joueur ;
 	private String[] coordonee_pinceau ;
 	private JTextField username;
 	private JComboBox<String> choix_couleur;
 	private JTextField salon ;
+	private String[] tag_coordonee_pinceau ;
+	private String[] tag_player_ready ;
+	private String[] tag_message ;
+	private String[] tag_couleur_pinceau ;
+	private String[] tag_couleur_reset ;
+	private String[] tag_who_draw ;
+	private String[] tag_taille_pinceau ;
 	
 	public FrameAffichage( String host , String port, ClientRiver clientriver, Client clientJMS )
 	{		
@@ -135,16 +144,34 @@ public class FrameAffichage extends JFrame
 			client.topic = (Topic) client.context.lookup( client.topicname ) ;
 			TopicConnectionFactory topic_connection_factory = (TopicConnectionFactory) client.context.lookup( "ConnectionFactory" ) ;
 			client.topic_connection = topic_connection_factory.createTopicConnection() ;
-			this.tag_joueur = new String[1] ;
-			this.tag_joueur[0] = "playing=true" ;
-			client.filter( client.parseTags( this.tag_joueur , 0 ) ) ;
+			this.tag_playing_joueur = new String[1] ;
+			this.tag_playing_joueur[0] = "playing=true" ;
+			client.filter( client.parseTags( this.tag_playing_joueur , 0 ) , this ) ;
 			this.tag_new_joueur = new String[1] ;
 			this.tag_new_joueur[0] = "new=true" ;
-			client.filter2( client.parseTags( this.tag_new_joueur , 0 ) ) ;
-			this.coordonee_pinceau = new String[1] ;
-			this.coordonee_pinceau[0] = "dessin=true" ;
-			client.filter2( client.parseTags( this.coordonee_pinceau , 0 ) ) ;
-			Properties tags = client.parseTags( this.tag_joueur , 0 ) ;
+			client.filter2( client.parseTags( this.tag_new_joueur , 0 ) , this ) ;
+			this.tag_coordonee_pinceau = new String[1] ;
+			this.tag_coordonee_pinceau[0] = "dessin=true" ;
+			client.filter3( client.parseTags( this.tag_coordonee_pinceau , 0 ) ) ;
+			this.tag_player_ready = new String[1] ;
+			this.tag_player_ready[0] = "player=ready" ;
+			client.filter4( client.parseTags( this.tag_player_ready , 0 ) ) ;
+			this.tag_message = new String[1] ;
+			this.tag_message[0] = "message=true" ;
+			client.filter5( client.parseTags( this.tag_message , 0 ) , this ) ;
+			this.tag_couleur_pinceau = new String[1] ;
+			this.tag_couleur_pinceau[0] = "color=pinceau" ;
+			client.filter6( client.parseTags( this.tag_couleur_pinceau , 0 ) ) ;
+			this.tag_couleur_reset = new String[1] ;
+			this.tag_couleur_reset[0] = "color=reset" ;
+			client.filter7( client.parseTags( this.tag_couleur_reset , 0 ) ) ;
+			this.tag_who_draw = new String[1] ;
+			this.tag_who_draw[0] = "drawer=true" ;
+			client.filter8( client.parseTags( this.tag_who_draw , 0 ) ) ;
+			this.tag_taille_pinceau = new String[1] ;
+			this.tag_taille_pinceau[0] = "drawer=true" ;
+			client.filter9( client.parseTags( this.tag_taille_pinceau , 0 ) ) ;
+			Properties tags = client.parseTags( this.tag_playing_joueur , 0 ) ;
 			client.share( "hello" , tags ) ;
 		} catch (NamingException | JMSException e1) {e1.printStackTrace();}
 	}
@@ -160,19 +187,28 @@ public class FrameAffichage extends JFrame
 		    {
 				if ( e.getActionCommand().equals( "" ) == false )
 				{
+					Properties tags ;
 					switch ( start_et_reset_bouton.getText() )
 					{
 						case "START" :
-							append_to_chat( "Word added by " + moi.name + "." , moi.colorUser ) ;
+							//append_to_chat( "Word added by " + moi.name + "." , moi.colorUser ) ;
+							tags = client.parseTags( tag_message , 0 ) ;
+							client.share( "Word added by " + moi.name + "." , tags ) ;
 							break ;
 						case "READY" :
-							append_to_chat( moi.name + " : " + e.getActionCommand() , moi.colorUser ) ;
+							//append_to_chat( moi.name + " : " + e.getActionCommand() , moi.colorUser ) ;
+							tags = client.parseTags( tag_message , 0 ) ;
+							client.share( moi.name + " : " + e.getActionCommand() , tags ) ;
 							break ;
 						case "RESET" :
-							append_to_chat( moi.name + " : " + e.getActionCommand() , moi.colorUser ) ;
+							//append_to_chat( moi.name + " : " + e.getActionCommand() , moi.colorUser ) ;
+							tags = client.parseTags( tag_message , 0 ) ;
+							client.share( moi.name + " : " + e.getActionCommand() , tags ) ;
 							break ;
 						case "ANSWER" :
-							append_to_chat( moi.name + " : " + e.getActionCommand() , moi.colorUser ) ;
+							//append_to_chat( moi.name + " : " + e.getActionCommand() , moi.colorUser ) ;
+							tags = client.parseTags( tag_message , 0 ) ;
+							client.share( moi.name + " : " + e.getActionCommand() , tags ) ;
 							break ;
 						default :
 							break ;
@@ -196,11 +232,14 @@ public class FrameAffichage extends JFrame
 		    {
 				if ( e.getActionCommand().equals( "" ) == false )
 				{
+					Properties tags ;
 					System.out.println( e.getActionCommand() ) ; // le mettre dans le topic
 					switch ( start_et_reset_bouton.getText() )
 					{
 						case "START" :
 							start_et_reset_bouton.setText( "READY" ) ;
+							tags = client.parseTags( tag_player_ready , 0 ) ;
+							client.share( moi.name , tags ) ;
 							break ;
 						case "READY" :
 							/*if ( moi.isDrawer == false )
@@ -228,7 +267,8 @@ public class FrameAffichage extends JFrame
 							fenetre.setReset( true ) ;
 							fenetre.set_couleur_pinceau( (String) choix_couleur_background.getSelectedItem() ) ;
 							fenetre.paint( fenetre.getGraphics() ) ;
-							fenetre.set_couleur_pinceau( (String) choix_couleur_pinceau.getSelectedItem() ) ;
+							tags = client.parseTags( tag_couleur_reset , 0 ) ;
+							client.share( (String) choix_couleur.getSelectedItem() , tags ) ;
 							break ;
 						case "ANSWER" :
 							break ;
@@ -253,7 +293,9 @@ public class FrameAffichage extends JFrame
 				if ( fenetre.getTaille_pinceau() > 1 )
 				{
 					fenetre.setTaille_pinceau( fenetre.getTaille_pinceau() - 1 ) ;
-					taille_pinceau.setText( Integer.toString( fenetre.getTaille_pinceau() ) );
+					taille_pinceau.setText( Integer.toString( fenetre.getTaille_pinceau() ) ) ;
+					Properties tags = client.parseTags( tag_taille_pinceau , 0 ) ;
+					client.share( Integer.toString(fenetre.getTaille_pinceau() - 1) , tags ) ;
 				}
 				
 		    }
@@ -274,6 +316,8 @@ public class FrameAffichage extends JFrame
 				{
 					fenetre.setTaille_pinceau( fenetre.getTaille_pinceau() + 1 ) ;
 					taille_pinceau.setText( Integer.toString( fenetre.getTaille_pinceau() ) ) ;
+					Properties tags = client.parseTags( tag_taille_pinceau , 0 ) ;
+					client.share( Integer.toString(fenetre.getTaille_pinceau() + 1) , tags ) ;
 				}
 		    }
 		};
@@ -290,6 +334,8 @@ public class FrameAffichage extends JFrame
 		    public void actionPerformed( ActionEvent e )
 		    {
 				fenetre.set_couleur_pinceau( (String) choix_couleur_pinceau.getSelectedItem() ) ;
+				Properties tags = client.parseTags( tag_couleur_pinceau , 0 ) ;
+				client.share( (String) choix_couleur_pinceau.getSelectedItem() , tags ) ;
 		    }
 		};
 		return action ;
@@ -390,7 +436,7 @@ public class FrameAffichage extends JFrame
 		this.zone_de_chat = new JPanel();
 		this.zone_de_chat.setLayout( new BorderLayout() ) ;
 		this.panel_global.add( this.zone_de_dessin , BorderLayout.CENTER ) ;
-		this.ml = new Mouse_listener( this.fenetre ) ;
+		this.ml = new Mouse_listener( this.fenetre , this.client ) ;
 		this.fenetre.addMouseListener( this.ml ) ;
 		this.fenetre.addMouseMotionListener( this.ml ) ;
 		this.zone_de_dessin.add( this.fenetre , BorderLayout.CENTER ) ;
@@ -483,7 +529,7 @@ public class FrameAffichage extends JFrame
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);System.out.println(this.getSize().width + " " + this.getSize().height);
 	}
 	
-	private void append_to_chat( String msg , Color c )
+	public void append_to_chat( String msg , Color c )
     {
         StyleContext sc = StyleContext.getDefaultStyleContext() ;
         AttributeSet aset = sc.addAttribute( SimpleAttributeSet.EMPTY , StyleConstants.Foreground , c ) ;

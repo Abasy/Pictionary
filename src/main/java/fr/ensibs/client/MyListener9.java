@@ -5,17 +5,12 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import fr.ensibs.model.User;
-import fr.ensibs.view.FrameAffichage;
-
-
-public class MyListener implements MessageListener
+public class MyListener9 implements MessageListener
 {
-	FrameAffichage jeu ;
 	
-	public MyListener( FrameAffichage jeu )
+	public MyListener9()
 	{
-		this.jeu = jeu ;
+		
 	}
 	@Override
 	public void onMessage( Message message )
@@ -23,9 +18,9 @@ public class MyListener implements MessageListener
 		try
 		{
 			TextMessage myMessage = (TextMessage) message ; // faire un selector pour les tags
-			String nom_joueur = (String) myMessage.getBody( String.class ) ;
-			System.out.println(nom_joueur);
-			this.jeu.joueurs.add( new User( nom_joueur ) ) ;
+			String point = (String) myMessage.getBody( String.class ) ;
+			String[] x_et_y = point.split( " " ) ;
+			System.out.println(point);
 		} catch (ClassCastException | JMSException e) {e.printStackTrace();}
 	}
 
