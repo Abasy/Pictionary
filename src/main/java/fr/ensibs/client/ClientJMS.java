@@ -12,6 +12,7 @@ import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
+import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -153,10 +154,10 @@ public class ClientJMS {
 			
 			JMSConsumer jmsConsumer = jmscontext.createConsumer(destination);
 			
-			/*ObjectMessage m = (ObjectMessage) jmsConsumer.receive();
-			//m.acknowledge();
+			ObjectMessage m = (ObjectMessage) jmsConsumer.receive();
+			m.acknowledge();
 			
-			System.out.println("Mon message reçu : "+m.getBody(MessageObject.class).getMessage());
+			//System.out.println("Mon message reçu : "+m.getBody(MessageObject.class).getMessage());
 			
 			MessageObject messageObject = m.getBody(MessageObject.class);
 			String user = m.getStringProperty("username");
