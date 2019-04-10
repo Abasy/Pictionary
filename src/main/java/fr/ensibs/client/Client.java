@@ -33,6 +33,8 @@ import org.objectweb.joram.client.jms.Destination;
 import org.objectweb.joram.client.jms.admin.AdminException;
 import org.objectweb.joram.client.jms.admin.AdminModule;
 
+import fr.ensibs.view.FrameAffichage;
+
 /**
 * The entry point for the user photo sharing application that allows to enter
 * descriptions and tags of photos to be shared and filter and choose photos
@@ -60,6 +62,18 @@ public class Client implements Closeable
 	public Topic topic2 ;
 	public TopicConnection topic_connection3 ;
 	public Topic topic3 ;
+	public TopicConnection topic_connection4 ;
+	public Topic topic4 ;
+	public TopicConnection topic_connection5 ;
+	public Topic topic5 ;
+	public TopicConnection topic_connection6 ;
+	public Topic topic6 ;
+	public TopicConnection topic_connection7 ;
+	public Topic topic7 ;
+	public TopicConnection topic_connection8 ;
+	public Topic topic8 ;
+	public TopicConnection topic_connection9 ;
+	public Topic topic9 ;
 	public String username ;
 	
 	/**
@@ -102,15 +116,6 @@ public class Client implements Closeable
 			client.topic_connection = topic_connection_factory.createTopicConnection() ;
 			client.topic_connection2 = topic_connection_factory.createTopicConnection() ;
 			client.topic_connection3 = topic_connection_factory.createTopicConnection() ;
-			String[] tmp = { "a=a" } ;
-			client.filter( client.parseTags( tmp , 0 ) ) ;
-			Properties tags = client.parseTags( tmp , 0 ) ;
-			client.share( "hello" , tags ) ;
-			String[] tmp1 = { "b=b" } ;
-			client.filter2( client.parseTags( tmp1 , 0 ) ) ;
-			Properties tags2 = client.parseTags( tmp1 , 0 ) ;
-			client.share2( "hello2" , tags2 ) ;
-			client.share( "hello" , tags ) ;
 		} catch (NamingException | JMSException e1) {e1.printStackTrace();}
 		try
 		{
@@ -212,12 +217,138 @@ public class Client implements Closeable
 		} catch ( JMSException e) {e.printStackTrace();}
 	}
 	
+	public void share4( String who_ready , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection4.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic4 ) ;
+			TextMessage message = publish_session.createTextMessage( who_ready ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection4.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( who_ready + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share5( String message_a_envoyer , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection5.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic5 ) ;
+			TextMessage message = publish_session.createTextMessage( message_a_envoyer ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection5.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( message_a_envoyer + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share6( String couleur_pinceau , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection6.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic6 ) ;
+			TextMessage message = publish_session.createTextMessage( couleur_pinceau ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection6.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( couleur_pinceau + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share7( String couleur_reset , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection7.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic7 ) ;
+			TextMessage message = publish_session.createTextMessage( couleur_reset ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection7.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( couleur_reset + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share8( String who_draw , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection8.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic8 ) ;
+			TextMessage message = publish_session.createTextMessage( who_draw ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection8.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( who_draw + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share9( String taille_pinceau , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection9.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic9 ) ;
+			TextMessage message = publish_session.createTextMessage( taille_pinceau ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection9.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( taille_pinceau + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
 	/**
 	* Specify the photos the user is interested in by setting new tags
 	*
 	* @param tags the new user tags
 	*/
-	public void filter( Properties tags )
+	public void filter( Properties tags , FrameAffichage jeu )
 	{
 		try
 		{
@@ -232,7 +363,7 @@ public class Client implements Closeable
 			}
 			TopicSession subscribe_session = this.topic_connection.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
 			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic , tags_remis_en_string , false ) ;
-			topic_subscriber.setMessageListener( new MyListener() ) ;
+			topic_subscriber.setMessageListener( new MyListener( jeu ) ) ;
 		} catch ( JMSException e) {e.printStackTrace();}
 		System.out.println( "Filter " + tags + " has been set" ) ;
 	}
@@ -242,7 +373,7 @@ public class Client implements Closeable
 	*
 	* @param tags the new user tags
 	*/
-	public void filter2( Properties tags )
+	public void filter2( Properties tags , FrameAffichage jeu )
 	{
 		try
 		{
@@ -257,7 +388,147 @@ public class Client implements Closeable
 			}
 			TopicSession subscribe_session = this.topic_connection2.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
 			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic2 , tags_remis_en_string , false ) ;
-			topic_subscriber.setMessageListener( new MyListener() ) ;
+			topic_subscriber.setMessageListener( new MyListener2( jeu ) ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter3( Properties tags )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection3.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic3 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener3() ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter4( Properties tags )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection4.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic4 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener4() ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter5( Properties tags , FrameAffichage jeu )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection5.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic5 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener5( jeu ) ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter6( Properties tags )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection6.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic6 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener6() ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter7( Properties tags )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection7.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic7 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener7() ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter8( Properties tags )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection8.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic8 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener8() ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+		System.out.println( "Filter " + tags + " has been set" ) ;
+	}
+	
+	public void filter9( Properties tags )
+	{
+		try
+		{
+			String tags_remis_en_string = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				if ( tags_remis_en_string.equals( "" ) == false )
+				{
+					tags_remis_en_string += " OR " ;
+				}
+				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
+			}
+			TopicSession subscribe_session = this.topic_connection9.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic9 , tags_remis_en_string , false ) ;
+			topic_subscriber.setMessageListener( new MyListener9() ) ;
 		} catch ( JMSException e) {e.printStackTrace();}
 		System.out.println( "Filter " + tags + " has been set" ) ;
 	}

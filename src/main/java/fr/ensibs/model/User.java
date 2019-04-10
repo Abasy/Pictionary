@@ -48,6 +48,15 @@ public class User implements Entry {
 		this.isDrawer = null;
 		this.isReady = null;
 	}
+	
+	public User( String name )
+	{
+		this.name = name;
+		this.colorUser = Color.BLACK;
+		this.score = 0;
+		this.isDrawer = false;
+		this.isReady = false;
+	}
 
 	/**
 	 * A user constructor with parameters. That initialize all variables for name, colorUser, score, isDrawer and isReady.

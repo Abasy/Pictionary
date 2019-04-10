@@ -17,7 +17,8 @@ public class Affichage extends JPanel
 	private int zone_de_dessin_x ;
 	private int zone_de_dessin_y ;
 	private int taille_pinceau ;
-	private Color couleur ;
+	private Color couleur_reset ;
+	private Color couleur_pinceau ;
 	private Map<String,Color> couleurs_disponibles ;
 	
 	public Affichage( Map<String,Color> couleurs_disponibles )
@@ -26,7 +27,8 @@ public class Affichage extends JPanel
 		this.setPreferredSize( new Dimension( 600 , 400 ) ) ;
 		this.zone_de_dessin_x = -100 ; // il arrive trop souvent que le fond ne se peint pas à l'initialisation
 		this.zone_de_dessin_y = -100 ;
-		this.couleur = Color.BLACK ;
+		this.couleur_reset = Color.BLACK ;
+		this.couleur_pinceau = Color.BLACK ;
 		this.couleurs_disponibles = couleurs_disponibles ;
 	}
 	
@@ -38,14 +40,14 @@ public class Affichage extends JPanel
 		if ( reset == true || ( this.zone_de_dessin_x == -100 && this.zone_de_dessin_y == -100 ) )
 		{
 			//reset de l'écran
-			g.setColor( this.couleur ) ;
+			g.setColor( this.couleur_reset ) ;
 			g.fillRect( 0 , 0 , 600 , 400 ) ;
 			reset = false ;
 		}
 		else
 		{
 			// dessin
-			g.setColor( this.couleur ) ;
+			g.setColor( this.couleur_pinceau ) ;
 			g.fillRect( (int) (this.zone_de_dessin_x - this.taille_pinceau*0.5) , (int) (this.zone_de_dessin_y - this.taille_pinceau*0.5) , this.taille_pinceau , this.taille_pinceau ) ;
 		}
 	}
@@ -95,18 +97,28 @@ public class Affichage extends JPanel
 		this.reset = reset ;
 	}
 
-	public Color getCouleur()
+	public Color getCouleur_pinceau()
 	{
-		return couleur ;
+		return this.couleur_pinceau ;
 	}
 
-	public void setCouleur( Color couleur )
+	public void setCouleur_pinceau( Color couleur )
 	{
-		this.couleur = couleur ;
+		this.couleur_pinceau = couleur ;
+	}
+
+	public void setCouleur_reset( Color couleur )
+	{
+		this.couleur_reset = couleur ;
 	}
 	
 	public void set_couleur_pinceau( String nom_couleur )
 	{
-		this.setCouleur( this.couleurs_disponibles.get( nom_couleur ) ) ;
+		this.setCouleur_pinceau( this.couleurs_disponibles.get( nom_couleur ) ) ;
+	}
+	
+	public void set_couleur_reset( String nom_couleur )
+	{
+		this.setCouleur_reset( this.couleurs_disponibles.get( nom_couleur ) ) ;
 	}
 }
