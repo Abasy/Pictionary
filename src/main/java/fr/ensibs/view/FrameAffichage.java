@@ -9,10 +9,17 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.jms.JMSException;
+import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -34,6 +41,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
+import fr.ensibs.client.Client;
 import fr.ensibs.model.User;
 
 public class FrameAffichage extends JFrame
@@ -70,10 +78,14 @@ public class FrameAffichage extends JFrame
 	private JComboBox<String> choix_couleur_pinceau ;
 	private String[] nom_couleurs_disponibles = { "Black" , "Dark-gray" , "Gray" , "Light-gray" , "White" , "Red" , "Green" , "Blue" , "Orange" , "Yellow" , "Pink" , "Cyan" , "Magenta" } ;
 	private Map<String,Color> couleurs_disponibles ;
+	private Client client ;
+	private String[] tag_joueur ;
+	private String[] tag_new_joueur ;
+	private String[] coordonee_pinceau ;
 	
-	
-	public FrameAffichage()
+	public FrameAffichage( String host , String port )
 	{
+		
 		this.couleurs_disponibles = new HashMap<String,Color>() ;
 		this.couleurs_disponibles.put( "Black" , Color.BLACK ) ;
 		this.couleurs_disponibles.put( "Dark-gray" , Color.DARK_GRAY ) ;
@@ -100,11 +112,34 @@ public class FrameAffichage extends JFrame
 		        @Override
 		        public void windowClosing(WindowEvent event)
 		        {
-		        	System.out.println("e");
+		    		try
+		    		{
+		    			client.context.close() ;
+		    			client.close() ;
+		    		} catch (IOException | NamingException e) {e.printStackTrace();}
 		        }
 			});
 		this.connexion() ;
 		//this.play() ;
+		this.client = new Client( host , Integer.parseInt(port) , this.moi.name ) ;
+		try
+		{
+			client.context = new InitialContext() ;
+			client.topic = (Topic) client.context.lookup( client.topicname ) ;
+			TopicConnectionFactory topic_connection_factory = (TopicConnectionFactory) client.context.lookup( "ConnectionFactory" ) ;
+			client.topic_connection = topic_connection_factory.createTopicConnection() ;
+			this.tag_joueur = new String[1] ;
+			this.tag_joueur[0] = "playing=true" ;
+			client.filter( client.parseTags( this.tag_joueur , 0 ) ) ;
+			this.tag_new_joueur = new String[1] ;
+			this.tag_new_joueur[0] = "new=true" ;
+			client.filter2( client.parseTags( this.tag_new_joueur , 0 ) ) ;
+			this.coordonee_pinceau = new String[1] ;
+			this.coordonee_pinceau[0] = "dessin=true" ;
+			client.filter2( client.parseTags( this.coordonee_pinceau , 0 ) ) ;
+			Properties tags = client.parseTags( this.tag_joueur , 0 ) ;
+			client.share( "hello" , tags ) ;
+		} catch (NamingException | JMSException e1) {e1.printStackTrace();}
 	}
 	
 	public Action create_text_action()

@@ -47,27 +47,10 @@ public class Main
 				
 				if(space != null)
 				{
-					FrameAffichage frame = new FrameAffichage() ;
+					FrameAffichage frame = new FrameAffichage( host , port ) ;
 					frame.setVisible( true ) ;
 					//frame.play();
 					//frame.dispose();
-					Client client = new Client( host , Integer.parseInt(port) , frame.moi.name ) ;
-					try
-					{
-						client.context = new InitialContext() ;
-						client.topic = (Topic) client.context.lookup( client.topicname ) ;
-						TopicConnectionFactory topic_connection_factory = (TopicConnectionFactory) client.context.lookup( "ConnectionFactory" ) ;
-						client.topic_connection = topic_connection_factory.createTopicConnection() ;
-						String[] tmp = { "playing=true" } ;
-						client.filter( client.parseTags( tmp , 0 ) ) ;
-						Properties tags = client.parseTags( tmp , 0 ) ;
-						client.share( "hello" , tags ) ;
-					} catch (NamingException | JMSException e1) {e1.printStackTrace();}
-					try
-					{
-						client.context.close() ;
-						client.close() ;
-					} catch (IOException | NamingException e) {e.printStackTrace();}
 				}
 				else
 				{

@@ -58,6 +58,9 @@ public class Client implements Closeable
 	public Topic topic ;
 	public TopicConnection topic_connection2 ;
 	public Topic topic2 ;
+	public TopicConnection topic_connection3 ;
+	public Topic topic3 ;
+	public String username ;
 	
 	/**
 	* Print a usage message and exit
@@ -94,9 +97,11 @@ public class Client implements Closeable
 			client.context = new InitialContext() ;
 			client.topic = (Topic) client.context.lookup( client.topicname ) ;
 			client.topic2 = (Topic) client.context.lookup( client.topicname ) ;
+			client.topic3 = (Topic) client.context.lookup( client.topicname ) ;
 			TopicConnectionFactory topic_connection_factory = (TopicConnectionFactory) client.context.lookup( "ConnectionFactory" ) ;
 			client.topic_connection = topic_connection_factory.createTopicConnection() ;
 			client.topic_connection2 = topic_connection_factory.createTopicConnection() ;
+			client.topic_connection3 = topic_connection_factory.createTopicConnection() ;
 			String[] tmp = { "a=a" } ;
 			client.filter( client.parseTags( tmp , 0 ) ) ;
 			Properties tags = client.parseTags( tmp , 0 ) ;
@@ -104,7 +109,7 @@ public class Client implements Closeable
 			String[] tmp1 = { "b=b" } ;
 			client.filter2( client.parseTags( tmp1 , 0 ) ) ;
 			Properties tags2 = client.parseTags( tmp1 , 0 ) ;
-			client.share( "hello" , tags2 ) ;
+			client.share2( "hello2" , tags2 ) ;
 			client.share( "hello" , tags ) ;
 		} catch (NamingException | JMSException e1) {e1.printStackTrace();}
 		try
@@ -121,11 +126,12 @@ public class Client implements Closeable
 	* @param userName the user name in the community
 	* @param directory the local directory where photos are stored
 	*/
-	public Client( String host , int port , String userName )
+	public Client( String host , int port , String username )
 	{
 		this.host = host ;
 		this.port = port ;
 		this.topicname = "topic_dessin_pictionary" ;
+		this.username = username ;
 		// Connecting to JORAM server:
 		try
 		{
@@ -143,14 +149,13 @@ public class Client implements Closeable
 	* @param file the photo file in the local directory
 	* @param tags a list of tags that describe the photo
 	*/
-	public void share( String coordonee , Properties tags )
+	public void share( String nom_joueur , Properties tags )
 	{
-		Destination destination;
 		try
 		{
-			TopicSession publish_session = topic_connection.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSession publish_session = this.topic_connection.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
 			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic ) ;
-			TextMessage message = publish_session.createTextMessage( coordonee ) ;
+			TextMessage message = publish_session.createTextMessage( nom_joueur ) ;
 			String key = "" ;
 			String value = "" ;
 			for (Map.Entry<Object, Object> entry : tags.entrySet())
@@ -160,6 +165,48 @@ public class Client implements Closeable
 				message.setStringProperty( key , value ) ;
 			}
 			this.topic_connection.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( nom_joueur + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share2( String nom_nouveau_joueur , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection2.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic2 ) ;
+			TextMessage message = publish_session.createTextMessage( nom_nouveau_joueur ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection2.start() ;
+			topic_publisher.publish( message ) ;
+			System.out.println( nom_nouveau_joueur + " has been shared" ) ;
+		} catch ( JMSException e) {e.printStackTrace();}
+	}
+	
+	public void share3( String coordonee , Properties tags )
+	{
+		try
+		{
+			TopicSession publish_session = this.topic_connection3.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicPublisher topic_publisher = publish_session.createPublisher( this.topic3 ) ;
+			TextMessage message = publish_session.createTextMessage( coordonee ) ;
+			String key = "" ;
+			String value = "" ;
+			for (Map.Entry<Object, Object> entry : tags.entrySet())
+			{
+				key = (String) entry.getKey() ;
+				value = (String) entry.getValue() ;
+				message.setStringProperty( key , value ) ;
+			}
+			this.topic_connection3.start() ;
 			topic_publisher.publish( message ) ;
 			System.out.println( coordonee + " has been shared" ) ;
 		} catch ( JMSException e) {e.printStackTrace();}
@@ -208,8 +255,8 @@ public class Client implements Closeable
 				}
 				tags_remis_en_string += entry.getKey() + "='" + entry.getValue() + "'" ;
 			}
-			TopicSession subscribe_session = this.topic_connection.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
-			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic , tags_remis_en_string , false ) ;
+			TopicSession subscribe_session = this.topic_connection2.createTopicSession( false , Session.AUTO_ACKNOWLEDGE ) ;
+			TopicSubscriber topic_subscriber = subscribe_session.createSubscriber( this.topic2 , tags_remis_en_string , false ) ;
 			topic_subscriber.setMessageListener( new MyListener() ) ;
 		} catch ( JMSException e) {e.printStackTrace();}
 		System.out.println( "Filter " + tags + " has been set" ) ;
