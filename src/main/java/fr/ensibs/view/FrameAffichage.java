@@ -4,12 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +29,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -42,7 +40,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import fr.ensibs.client.Client;
+import fr.ensibs.client.ClientRiver;
 import fr.ensibs.model.User;
+import net.jini.core.transaction.TransactionException;
 
 public class FrameAffichage extends JFrame
 {
@@ -79,13 +79,16 @@ public class FrameAffichage extends JFrame
 	private String[] nom_couleurs_disponibles = { "Black" , "Dark-gray" , "Gray" , "Light-gray" , "White" , "Red" , "Green" , "Blue" , "Orange" , "Yellow" , "Pink" , "Cyan" , "Magenta" } ;
 	private Map<String,Color> couleurs_disponibles ;
 	private Client client ;
+	private ClientRiver clientriver;
 	private String[] tag_joueur ;
 	private String[] tag_new_joueur ;
 	private String[] coordonee_pinceau ;
+	private JTextField username;
+	private JComboBox<String> choix_couleur;
+	private JTextField salon ;
 	
-	public FrameAffichage( String host , String port )
-	{
-		
+	public FrameAffichage( String host , String port, ClientRiver clientriver, Client clientJMS )
+	{		
 		this.couleurs_disponibles = new HashMap<String,Color>() ;
 		this.couleurs_disponibles.put( "Black" , Color.BLACK ) ;
 		this.couleurs_disponibles.put( "Dark-gray" , Color.DARK_GRAY ) ;
@@ -121,7 +124,11 @@ public class FrameAffichage extends JFrame
 			});
 		this.connexion() ;
 		//this.play() ;
-		this.client = new Client( host , Integer.parseInt(port) , this.moi.name ) ;
+		//this.client = new Client( host , Integer.parseInt(port) , this.moi.name ) ;
+		this.client = clientJMS;
+		System.out.println("Coucou2");
+		this.clientriver = clientriver;
+		
 		try
 		{
 			client.context = new InitialContext() ;
@@ -297,8 +304,16 @@ public class FrameAffichage extends JFrame
 			@Override
 		    public void actionPerformed( ActionEvent e )
 		    {
-				// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				
+				String user = username.getText();
+				Color colorUser = choix_couleur.getBackground();
+				String sal = salon.getText();
+				User newuser = new User(user, colorUser, 0, false, false, sal);
+				try {
+					clientriver.addUser(newuser);
+					joueurs.add(newuser);
+				} catch (RemoteException | TransactionException e1) {
+					e1.printStackTrace();
+				}
 		    }
 		};
 		return action ;
@@ -327,9 +342,11 @@ public class FrameAffichage extends JFrame
 		texte_username.setHorizontalAlignment( SwingConstants.CENTER ) ;
 		texte_username.setVerticalAlignment( SwingConstants.CENTER ) ;
 		panel_username.add( texte_username , BorderLayout.CENTER ) ;
-		JTextField username = new JTextField() ;
-		username.setPreferredSize( new Dimension( 165 , 20 ) ) ;
-		panel_username.add( username , BorderLayout.EAST ) ;
+		
+		this.username = new JTextField() ;
+		
+		this.username.setPreferredSize( new Dimension( 165 , 20 ) ) ;
+		panel_username.add( this.username , BorderLayout.EAST ) ;
 		JPanel panel_color = new JPanel() ;
 		panel_color.setLayout( new BorderLayout() ) ;
 		panel_color.setPreferredSize( new Dimension( 300 , 30 ) ) ;
@@ -339,9 +356,9 @@ public class FrameAffichage extends JFrame
 		texte_color.setHorizontalAlignment( SwingConstants.CENTER ) ;
 		texte_color.setVerticalAlignment( SwingConstants.CENTER ) ;
 		panel_color.add( texte_color , BorderLayout.CENTER ) ;
-		JComboBox<String> choix_couleur = new JComboBox<String>( this.nom_couleurs_disponibles ) ;
-		choix_couleur.setPreferredSize( new Dimension( 165 , 30 ) ) ;
-		panel_color.add( choix_couleur , BorderLayout.EAST ) ;
+		this.choix_couleur = new JComboBox<String>( this.nom_couleurs_disponibles ) ;
+		this.choix_couleur.setPreferredSize( new Dimension( 165 , 30 ) ) ;
+		panel_color.add( this.choix_couleur , BorderLayout.EAST ) ;
 		JPanel panel_salon = new JPanel() ;
 		panel_salon.setLayout( new BorderLayout() ) ;
 		panel_salon.setPreferredSize( new Dimension( 300 , 30 ) ) ;
@@ -351,9 +368,9 @@ public class FrameAffichage extends JFrame
 		texte_salon.setHorizontalAlignment( SwingConstants.CENTER ) ;
 		texte_salon.setVerticalAlignment( SwingConstants.CENTER ) ;
 		panel_salon.add( texte_salon , BorderLayout.CENTER ) ;
-		JTextField salon = new JTextField() ;
-		salon.setPreferredSize( new Dimension( 165 , 20 ) ) ;
-		panel_salon.add( salon , BorderLayout.EAST ) ;
+		this.salon = new JTextField() ;		
+		this.salon.setPreferredSize( new Dimension( 165 , 20 ) ) ;
+		panel_salon.add( this.salon , BorderLayout.EAST ) ;
 		JButton jouer = new JButton() ;
 		jouer.setText( "JOUER" ) ;
 		jouer.setPreferredSize( new Dimension( 100 , 50 ) ) ;

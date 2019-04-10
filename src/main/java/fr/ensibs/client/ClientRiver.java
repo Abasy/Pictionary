@@ -67,7 +67,7 @@ public class ClientRiver {
 	 * @throws RemoteException
 	 * @throws TransactionException
 	 */
-	public void addUser(String name, Color color) throws RemoteException, TransactionException {
+	public void addUser(String name, Color color, String salon) throws RemoteException, TransactionException {
 		/*****************************/
 		/** Create a new user object**/
 		/*****************************/
@@ -77,6 +77,43 @@ public class ClientRiver {
 		user.score = 0;
 		user.isDrawer = false;
 		user.isReady = false;
+		user.salon = salon;
+		
+		/************************************/
+		/** add the user into the javaspace**/
+		/************************************/
+		this.space.write(user, null, 60*60*1000);//The object exist during one hour into the javaspace. It is destroyed after that.
+		System.out.println("Add Word : ["+user.name+":"+user.colorUser+":"+user.score+":"+user.isDrawer+":"+user.isReady+"]");
+	}
+	
+	/**
+	 * Create a user object and add it into the javaspace
+	 * @param name the name of the user
+	 * @param color the color that represent a user
+	 * @throws RemoteException
+	 * @throws TransactionException
+	 */
+	public void addUser(String name, Color colorUser, Integer score, Boolean isDrawer, Boolean isReady, String salon) throws RemoteException, TransactionException {
+		/*****************************/
+		/** Create a new user object**/
+		/*****************************/
+		User user = new User(name,colorUser,score, isDrawer, isReady, salon);
+		
+		/************************************/
+		/** add the user into the javaspace**/
+		/************************************/
+		this.space.write(user, null, 60*60*1000);//The object exist during one hour into the javaspace. It is destroyed after that.
+		System.out.println("Add Word : ["+user.name+":"+user.colorUser+":"+user.score+":"+user.isDrawer+":"+user.isReady+"]");
+	}
+	
+	/**
+	 * Create a user object and add it into the javaspace
+	 * @param name the name of the user
+	 * @param color the color that represent a user
+	 * @throws RemoteException
+	 * @throws TransactionException
+	 */
+	public void addUser(User user) throws RemoteException, TransactionException {
 		
 		/************************************/
 		/** add the user into the javaspace**/

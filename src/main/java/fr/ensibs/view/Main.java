@@ -44,10 +44,10 @@ public class Main
 				
 				ClientRiver clientRiver = new ClientRiver(space);
 				//instance.test();
-				
+				Client clientJMS = new Client(host, Integer.parseInt(port));
 				if(space != null)
 				{
-					FrameAffichage frame = new FrameAffichage( host , port ) ;
+					FrameAffichage frame = new FrameAffichage( host , port, clientRiver, clientJMS) ;
 					frame.setVisible( true ) ;
 					//frame.play();
 					//frame.dispose();

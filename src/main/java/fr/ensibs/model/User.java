@@ -38,6 +38,8 @@ public class User implements Entry {
 	 */
 	public Boolean isReady;
 	
+	public String salon;
+	
 	/**
 	 * A user constructor without parameters. That initialize all variables at null.
 	 */
@@ -47,6 +49,7 @@ public class User implements Entry {
 		this.score = null;
 		this.isDrawer = null;
 		this.isReady = null;
+		this.salon = null;
 	}
 
 	/**
@@ -57,12 +60,13 @@ public class User implements Entry {
 	 * @param isDrawer a boolean that tell if the user is the drawer
 	 * @param isReady a boolean that tell if the user who draw is ready to draw
 	 */
-	public User(String name, Color colorUser, Integer score, Boolean isDrawer, Boolean isReady) {
+	public User(String name, Color colorUser, Integer score, Boolean isDrawer, Boolean isReady, String salon) {
 		this.name = name;
 		this.colorUser = colorUser;
 		this.score = score;
 		this.isDrawer = isDrawer;
 		this.isReady = isReady;
+		this.salon = salon;
 		
 	}
 	

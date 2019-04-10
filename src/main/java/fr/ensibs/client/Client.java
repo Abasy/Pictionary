@@ -1,7 +1,6 @@
 package fr.ensibs.client;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Scanner;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSConsumer;
@@ -82,7 +80,7 @@ public class Client implements Closeable
 	*
 	* @param args see usage
 	*/
-	public static void main( String[] args )
+	/*public static void main( String[] args )
 	{
 		if ( args.length != 3 )
 		{
@@ -98,14 +96,17 @@ public class Client implements Closeable
 			client.topic = (Topic) client.context.lookup( client.topicname ) ;
 			client.topic2 = (Topic) client.context.lookup( client.topicname ) ;
 			client.topic3 = (Topic) client.context.lookup( client.topicname ) ;
+			
 			TopicConnectionFactory topic_connection_factory = (TopicConnectionFactory) client.context.lookup( "ConnectionFactory" ) ;
 			client.topic_connection = topic_connection_factory.createTopicConnection() ;
 			client.topic_connection2 = topic_connection_factory.createTopicConnection() ;
 			client.topic_connection3 = topic_connection_factory.createTopicConnection() ;
+			
 			String[] tmp = { "a=a" } ;
 			client.filter( client.parseTags( tmp , 0 ) ) ;
 			Properties tags = client.parseTags( tmp , 0 ) ;
 			client.share( "hello" , tags ) ;
+			
 			String[] tmp1 = { "b=b" } ;
 			client.filter2( client.parseTags( tmp1 , 0 ) ) ;
 			Properties tags2 = client.parseTags( tmp1 , 0 ) ;
@@ -119,22 +120,24 @@ public class Client implements Closeable
 			client.close() ;
 		} catch (IOException | NamingException | JMSException e) {e.printStackTrace();}
 	}
-	
+	*/
 	/**
 	* Constructor
 	*
 	* @param userName the user name in the community
 	* @param directory the local directory where photos are stored
 	*/
-	public Client( String host , int port , String username )
+	public Client( String host , int port /*, String username*/ )
 	{
 		this.host = host ;
 		this.port = port ;
 		this.topicname = "topic_dessin_pictionary" ;
-		this.username = username ;
+		//this.username = username ;
+		
 		// Connecting to JORAM server:
 		try
 		{
+			System.out.println("Coucou");
 			AdminModule.connect( this.host , this.port + 1 , "root" , "root" ) ;
 		} catch (ConnectException | UnknownHostException | AdminException e) {e.printStackTrace();}
 		// Initialize the JNDI context
