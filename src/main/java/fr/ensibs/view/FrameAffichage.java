@@ -39,7 +39,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import fr.ensibs.client.Client;
+import fr.ensibs.client.ClientJMS;
 import fr.ensibs.client.ClientRiver;
 import fr.ensibs.model.User;
 import net.jini.core.transaction.TransactionException;
@@ -78,8 +78,7 @@ public class FrameAffichage extends JFrame
 	private JComboBox<String> choix_couleur_pinceau ;
 	private String[] nom_couleurs_disponibles = { "Black" , "Dark-gray" , "Gray" , "Light-gray" , "White" , "Red" , "Green" , "Blue" , "Orange" , "Yellow" , "Pink" , "Cyan" , "Magenta" } ;
 	private Map<String,Color> couleurs_disponibles ;
-	private JComboBox<String> choix_couleur ;
-	private Client client ;
+	private ClientJMS client ;
 	private ClientRiver clientriver;
 	private String[] tag_joueur ;
 	private String[] tag_playing_joueur ;
@@ -96,7 +95,7 @@ public class FrameAffichage extends JFrame
 	private String[] tag_who_draw ;
 	private String[] tag_taille_pinceau ;
 	
-	public FrameAffichage( String host , String port, ClientRiver clientriver, Client clientJMS )
+	public FrameAffichage( String host , String port, ClientRiver clientriver, ClientJMS clientJMS )
 	{		
 		this.couleurs_disponibles = new HashMap<String,Color>() ;
 		this.couleurs_disponibles.put( "Black" , Color.BLACK ) ;
@@ -135,7 +134,7 @@ public class FrameAffichage extends JFrame
 		//this.play() ;
 		//this.client = new Client( host , Integer.parseInt(port) , this.moi.name ) ;
 		this.client = clientJMS;
-		System.out.println("Coucou2");
+		//System.out.println("Coucou2");
 		this.clientriver = clientriver;
 		
 		try

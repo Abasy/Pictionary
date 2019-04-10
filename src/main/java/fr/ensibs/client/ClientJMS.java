@@ -38,7 +38,7 @@ import fr.ensibs.view.FrameAffichage;
 * descriptions and tags of photos to be shared and filter and choose photos
 * from their tags
 */
-public class Client implements Closeable
+public class ClientJMS implements Closeable
 {
 	
 	/**
@@ -141,7 +141,7 @@ public class Client implements Closeable
 	* @param userName the user name in the community
 	* @param directory the local directory where photos are stored
 	*/
-	public Client( String host , int port /*, String username*/ )
+	public ClientJMS( String host , int port /*, String username*/ )
 	{
 		this.host = host ;
 		this.port = port ;
@@ -151,7 +151,6 @@ public class Client implements Closeable
 		// Connecting to JORAM server:
 		try
 		{
-			System.out.println("Coucou");
 			AdminModule.connect( this.host , this.port + 1 , "root" , "root" ) ;
 		} catch (ConnectException | UnknownHostException | AdminException e) {e.printStackTrace();}
 		// Initialize the JNDI context

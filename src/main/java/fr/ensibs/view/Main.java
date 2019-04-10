@@ -9,7 +9,7 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import fr.ensibs.client.Client;
+import fr.ensibs.client.ClientJMS;
 import fr.ensibs.client.ClientRiver;
 import fr.ensibs.river.RiverLookup;
 import net.jini.space.JavaSpace;
@@ -44,7 +44,7 @@ public class Main
 				
 				ClientRiver clientRiver = new ClientRiver(space);
 				//instance.test();
-				Client clientJMS = new Client(host, Integer.parseInt(port));
+				ClientJMS clientJMS = new ClientJMS(host, Integer.parseInt(port));
 				if(space != null)
 				{
 					FrameAffichage frame = new FrameAffichage( host , port, clientRiver, clientJMS) ;

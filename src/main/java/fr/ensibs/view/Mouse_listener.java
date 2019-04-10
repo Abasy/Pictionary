@@ -5,16 +5,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Properties;
 
-import fr.ensibs.client.Client;
+import fr.ensibs.client.ClientJMS;
 
 
 public class Mouse_listener implements MouseMotionListener , MouseListener
 {
 	private boolean drawing ;
 	private Affichage fenetre ;
-	private Client client ;
+	private ClientJMS client ;
 
-	public Mouse_listener( Affichage affichage , Client client )
+	public Mouse_listener( Affichage affichage , ClientJMS client )
 	{
 		this.drawing = false ;
 		this.fenetre = affichage ;
