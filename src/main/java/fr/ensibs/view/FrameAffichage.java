@@ -60,7 +60,7 @@ public class FrameAffichage extends JFrame
 	private JButton start_et_reset_bouton ;
 	private ArrayList<JLabel> affiche_joueur ;
 	private ArrayList<User> joueurs ;
-	private User moi ;
+	public User moi ;
 	private JLabel taille_pinceau ;
 	private JButton plus_taille_pinceau ;
 	private JButton moins_taille_pinceau ;
@@ -68,7 +68,7 @@ public class FrameAffichage extends JFrame
 	private JComboBox<String> choix_couleur_background ;
 	private JLabel pinceau_couleur ;
 	private JComboBox<String> choix_couleur_pinceau ;
-	String[] nom_couleurs_disponibles = { "Black" , "Dark-gray" , "Gray" , "Light-gray" , "White" , "Red" , "Green" , "Blue" , "Orange" , "Yellow" , "Pink" , "Cyan" , "Magenta" } ;
+	private String[] nom_couleurs_disponibles = { "Black" , "Dark-gray" , "Gray" , "Light-gray" , "White" , "Red" , "Green" , "Blue" , "Orange" , "Yellow" , "Pink" , "Cyan" , "Magenta" } ;
 	private Map<String,Color> couleurs_disponibles ;
 	
 	

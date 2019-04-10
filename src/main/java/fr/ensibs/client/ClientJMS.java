@@ -5,6 +5,7 @@ import fr.ensibs.model.MessageObject;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -152,6 +153,8 @@ public class ClientJMS {
 			Destination destination = (Destination) this.context.lookup(this.topicname);
 			
 			JMSConsumer jmsConsumer = jmscontext.createConsumer(destination);
+			jmsConsumer.setMessageListener( new MyListener() ) ;
+			
 			
 			/*ObjectMessage m = (ObjectMessage) jmsConsumer.receive();
 			//m.acknowledge();
